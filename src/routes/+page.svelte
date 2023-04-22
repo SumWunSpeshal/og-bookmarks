@@ -1,7 +1,10 @@
-<script>
-	import Counter from './Counter.svelte';
-	import welcome from '$lib/images/svelte-welcome.webp';
-	import welcome_fallback from '$lib/images/svelte-welcome.png';
+<script lang="ts">
+	import { bookmarks, ogBookmarks } from '../stores/bookmarks';
+	import { get } from 'svelte/store';
+
+	let inputRef: HTMLInputElement;
+	let value = 'https://npmtrends.com/';
+	$: valid = value && inputRef?.validity.valid;
 </script>
 
 <svelte:head>
@@ -10,50 +13,49 @@
 </svelte:head>
 
 <section>
-	<h1>
-		<span class="welcome">
-			<picture>
-				<source srcset={welcome} type="image/webp" />
-				<img src={welcome_fallback} alt="Welcome" />
-			</picture>
-		</span>
+	<form
+		on:submit|preventDefault={() => {
+			if (get(bookmarks).includes(value)) {
+				return;
+			}
 
-		to your new<br />SvelteKit app
-	</h1>
-
-	<h2>
-		try editing <strong>src/routes/+page.svelte</strong>
-	</h2>
-
-	<Counter />
+			bookmarks.add(value);
+		}}
+	>
+		<label>
+			<span>Add Url</span>
+			<input
+				type="url"
+				required
+				placeholder="https://example.com"
+				pattern="https?://.*?\.[^\.]+$"
+				class:valid
+				bind:this={inputRef}
+				bind:value
+			/>
+		</label>
+		<button type="submit">Add</button>
+	</form>
+	<ul>
+		{#await $ogBookmarks}
+			<p>...loading</p>
+		{:then ogBookmarks}
+			{#each ogBookmarks as bookmark}
+				<li>
+					<pre>{JSON.stringify(bookmark, null, 2)}</pre>
+					<button type="button" on:click={() => bookmarks.remove(bookmark.requestUrl)}
+						>Delete
+					</button>
+				</li>
+			{/each}
+		{:catch error}
+			<p style="color: red">{error.message}</p>
+		{/await}
+	</ul>
 </section>
 
 <style>
-	section {
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
-		align-items: center;
-		flex: 0.6;
-	}
-
-	h1 {
-		width: 100%;
-	}
-
-	.welcome {
-		display: block;
-		position: relative;
-		width: 100%;
-		height: 0;
-		padding: 0 0 calc(100% * 495 / 2048) 0;
-	}
-
-	.welcome img {
-		position: absolute;
-		width: 100%;
-		height: 100%;
-		top: 0;
-		display: block;
+	.valid {
+		border: 1px solid red;
 	}
 </style>
