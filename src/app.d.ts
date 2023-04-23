@@ -7,3 +7,5 @@ declare namespace App {
 	// interface PageData {}
 	// interface Platform {}
 }
+
+export type OgImage = { url: string; width: string; height: string; type: string };

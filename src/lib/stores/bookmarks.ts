@@ -1,6 +1,6 @@
 import { derived, writable } from 'svelte/store';
 import { browser } from '$app/environment';
-import { buildParams } from '../lib/build-params';
+import { buildParams } from '$lib/build-params';
 
 export type Bookmarks = string[];
 const DEFAULT_STORE: Bookmarks = [];
