@@ -1,4 +1,4 @@
-import type { Bookmarks } from '../stores/bookmarks';
+import type { Bookmarks } from '$lib/stores/bookmarks';
 
 export function buildParams(value: Bookmarks): URLSearchParams {
 	const params = new URLSearchParams();

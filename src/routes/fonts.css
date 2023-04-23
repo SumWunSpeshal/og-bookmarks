@@ -1,0 +1,15 @@
+@font-face {
+  font-style: normal;
+  font-weight: 400;
+  src: url('/radikal-regular.woff2') format('woff2');
+  font-family: 'Radikal';
+  font-display: swap;
+}
+
+@font-face {
+  font-style: normal;
+  font-weight: 500;
+  src: url('/radikal-medium.woff2') format('woff2');
+  font-family: 'Radikal';
+  font-display: swap;
+}

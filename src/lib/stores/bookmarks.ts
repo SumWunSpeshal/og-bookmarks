@@ -1,4 +1,4 @@
-import { derived, writable } from 'svelte/store';
+import { derived, writable, get } from 'svelte/store';
 import { browser } from '$app/environment';
 import { buildParams } from '$lib/build-params';
 
@@ -7,12 +7,18 @@ const DEFAULT_STORE: Bookmarks = [];
 
 function createBookmarksStore() {
 	const cache = browser ? localStorage.getItem('urls') : null;
-	const { subscribe, update } = writable(cache ? (JSON.parse(cache) as Bookmarks) : DEFAULT_STORE);
+	const $store = writable(cache ? (JSON.parse(cache) as Bookmarks) : DEFAULT_STORE);
 
 	return {
-		subscribe,
-		add: (url: string) => update((prev) => Array.from(new Set([...prev, url]))),
-		remove: (url: string) => update((prev) => prev.filter((e) => e !== url))
+		subscribe: $store.subscribe,
+		add: (url: string) => {
+			if (get($store).includes(url)) {
+				return;
+			}
+
+			$store.update((prev) => Array.from(new Set([...prev, url])));
+		},
+		remove: (url: string) => $store.update((prev) => prev.filter((e) => e !== url))
 	};
 }
 

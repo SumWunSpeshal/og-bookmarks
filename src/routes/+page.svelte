@@ -2,6 +2,7 @@
 	import { bookmarks, ogBookmarks } from '$lib/stores/bookmarks';
 	import AddForm from '$lib/AddForm.svelte';
 	import OgCard from '$lib/OgCard.svelte';
+	import Grid from '$lib/Grid.svelte';
 
 	let inputRef: HTMLInputElement;
 	let value = 'https://npmtrends.com/';
@@ -15,7 +16,7 @@
 
 <section>
 	<AddForm />
-	<div>
+	<Grid --col-amount="2">
 		{#await $ogBookmarks}
 			{#each $bookmarks as bookmark}
 				<OgCard requestUrl={bookmark} />
@@ -27,5 +28,5 @@
 		{:catch error}
 			<p style="color: red">{error.message}</p>
 		{/await}
-	</div>
+	</Grid>
 </section>

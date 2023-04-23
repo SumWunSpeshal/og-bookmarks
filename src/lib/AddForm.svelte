@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { bookmarks } from '$lib/stores/bookmarks';
-	import { get } from 'svelte/store';
 
 	let inputRef: HTMLInputElement;
 	let value = 'https://npmtrends.com/';
@@ -8,15 +7,7 @@
 	$: invalid = !valid;
 </script>
 
-<form
-	on:submit|preventDefault={() => {
-		// if (get(bookmarks).includes(value)) {
-		// 	return;
-		// }
-
-		bookmarks.add(value);
-	}}
->
+<form on:submit|preventDefault={() => bookmarks.add(value)}>
 	<label>
 		<span>Add Url</span>
 		<input

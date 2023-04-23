@@ -1,31 +1,43 @@
 <script>
 	import Header from '$lib/Header.svelte';
+	import './fonts.css';
 	import './styles.css';
+	import './base.css';
 </script>
 
 <div class="app">
-	<Header />
+	<div />
+	<div class="header">
+		<Header />
+	</div>
+	<div />
 
+	<div />
 	<main>
 		<slot />
 	</main>
+	<div />
+
+	<div />
+	<div class="footer">
+		<footer>Hello World</footer>
+	</div>
+	<div />
 </div>
 
 <style>
 	.app {
-		display: flex;
-		flex-direction: column;
+		display: grid;
+		grid-template-columns: 1fr max(1200px) 1fr;
+		grid-template-rows: auto 1fr auto;
+		gap: 1px;
+
 		min-height: 100vh;
+
+		background-color: #828c97;
 	}
 
-	main {
-		flex: 1;
-		display: flex;
-		flex-direction: column;
-		padding: 1rem;
-		width: 100%;
-		max-width: 64rem;
-		margin: 0 auto;
-		box-sizing: border-box;
+	.app > * {
+		background-color: rgb(226 228 221);
 	}
 </style>
