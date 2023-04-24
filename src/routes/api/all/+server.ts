@@ -2,17 +2,29 @@ import type { RequestHandler } from '@sveltejs/kit';
 import ogs from 'open-graph-scraper';
 
 export const GET: RequestHandler = async ({ url }) => {
-	const urls = url.searchParams.getAll('url');
-	const data = await Promise.all(
-		urls.map((url) =>
-			ogs({
-				url,
-				onlyGetOpenGraphInfo: true
-			})
-		)
-	);
+	const requestUrl = url.searchParams.get('url');
 
-	return new Response(JSON.stringify(data.map(({ result }) => result)), {
-		status: 200
+	if (!requestUrl) {
+		return new Response(null, {
+			status: 500
+		});
+	}
+
+	const { result } = await ogs({
+		url: requestUrl,
+		onlyGetOpenGraphInfo: true
 	});
+
+	return new Response(
+		JSON.stringify({
+			requestUrl,
+			ogTitle: result.ogTitle,
+			ogDescription: result.ogDescription,
+			ogUrl: result.ogUrl,
+			ogImage: result.ogImage
+		}),
+		{
+			status: 200
+		}
+	);
 };

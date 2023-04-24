@@ -1,41 +1,48 @@
-import { derived, writable, get } from 'svelte/store';
+import { get, writable } from 'svelte/store';
 import { browser } from '$app/environment';
-import { buildParams } from '$lib/build-params';
+import type { OgBookmarks } from '../../app';
 
-export type Bookmarks = string[];
-const DEFAULT_STORE: Bookmarks = [];
+const DEFAULT_STORE: OgBookmarks = {};
 
 function createBookmarksStore() {
-	const cache = browser ? localStorage.getItem('urls') : null;
-	const $store = writable(cache ? (JSON.parse(cache) as Bookmarks) : DEFAULT_STORE);
+	const cache = browser ? localStorage.getItem('bookmarks') : null;
+	const $store = writable(cache ? (JSON.parse(cache) as OgBookmarks) : DEFAULT_STORE);
 
 	return {
 		subscribe: $store.subscribe,
-		add: (url: string) => {
-			if (get($store).includes(url)) {
+		add: async (url: string) => {
+			if (url in get($store)) {
 				return;
 			}
-
-			$store.update((prev) => Array.from(new Set([...prev, url])));
+			const ogObject = await getOpenGraphData(url);
+			$store.update((prev) => ({ ...prev, [url]: ogObject }));
 		},
-		remove: (url: string) => $store.update((prev) => prev.filter((e) => e !== url))
+		remove: (url: string) => {
+			$store.update((prev) => {
+				if (url in prev) {
+					delete prev[url];
+				}
+
+				return { ...prev };
+			});
+		},
+		refresh: async (url: string) => {
+			if (!(url in get($store))) {
+				return;
+			}
+			const ogObject = await getOpenGraphData(url);
+			$store.update((prev) => ({ ...prev, [url]: ogObject }));
+		}
 	};
 }
 
-export const bookmarks = createBookmarksStore();
-export const ogBookmarks = derived(
-	bookmarks,
-	async (value) => {
-		if (!browser) {
-			return;
-		}
+async function getOpenGraphData(url: string) {
+	const response = await fetch(`/api/all?url=${url}`);
+	return await response.json();
+}
 
-		const response = await fetch('/api/all?' + buildParams(value));
-		return await response.json();
-	},
-	Promise.resolve(DEFAULT_STORE)
-);
+export const bookmarks = createBookmarksStore();
 
 if (browser) {
-	bookmarks.subscribe((value) => localStorage.setItem('urls', JSON.stringify(value)));
+	bookmarks.subscribe((value) => localStorage.setItem('bookmarks', JSON.stringify(value)));
 }

@@ -28,16 +28,16 @@
 <style>
 	.app {
 		display: grid;
-		grid-template-columns: 1fr max(1200px) 1fr;
+		grid-template-columns: 1fr minmax(0, 1200px) 1fr;
 		grid-template-rows: auto 1fr auto;
 		gap: 1px;
 
 		min-height: 100vh;
 
-		background-color: #828c97;
+		background-color: var(--contrast);
 	}
 
 	.app > * {
-		background-color: rgb(226 228 221);
+		background-color: var(--bg);
 	}
 </style>

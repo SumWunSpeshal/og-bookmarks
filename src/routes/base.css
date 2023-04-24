@@ -1,4 +1,25 @@
+:root {
+  --white: #fff;
+  --bg: #e2e8f0;
+  --bg-dark: #cbd5e1;
+  --contrast: #828c97;
+  --contrast-alt: #262626;
+}
+
 body {
   font-family: "Radikal", Arial, sans-serif;
   font-weight: 400;
+}
+
+h2 {
+  font-size: 1rem;
+}
+
+p {
+  font-size: 0.875rem;
+  color: var(--contrast-alt);
+}
+
+b, strong {
+  font-weight: 500;
 }

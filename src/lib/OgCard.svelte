@@ -1,32 +1,50 @@
 <script lang="ts">
 	import { bookmarks } from '$lib/stores/bookmarks';
-	import type { OgImage } from '../app';
 	import ContextMenu from '$lib/ContextMenu.svelte';
+	import OgImage from '$lib/OgImage.svelte';
+	import Skeleton from '$lib/Skeleton.svelte';
+	import type { ImageObject } from 'open-graph-scraper/dist/lib/types';
 
+	export let isLoading = true;
 	export let requestUrl: string;
 	export let ogUrl = requestUrl;
 	export let ogTitle: string;
 	export let ogDescription: string;
-	export let ogImage: OgImage;
+	export let ogImage: ImageObject;
 </script>
 
-<div class="card">
-	<a class="link" href={requestUrl}>
+<div class="card" class:isLoading>
+	<a class="link" href={requestUrl} target="_blank">
 		<div class="text">
 			<h2>
 				<strong>
-					{ogTitle}
+					{#if isLoading}
+						Lorem ipsum dolor sit amet
+					{:else}
+						{ogTitle || ''}
+					{/if}
 				</strong>
+				<Skeleton {isLoading} />
 			</h2>
-			<p>{ogDescription}</p>
+			<p>
+				{#if isLoading}
+					Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad adipisci at doloremque fuga
+					nesciunt nobis quaerat, voluptates.
+				{:else}
+					{ogDescription || ''}
+				{/if}
+				<Skeleton {isLoading} />
+			</p>
 			<small>{ogUrl}</small>
 		</div>
-		<div class="image">
-			<img src={ogImage?.url} alt={ogTitle} />
-		</div>
+
+		<OgImage {ogImage} {ogTitle} {requestUrl} {isLoading} />
 	</a>
 	<div class="context-menu">
-		<ContextMenu onDelete={() => bookmarks.remove(requestUrl)} />
+		<ContextMenu
+			onDelete={() => bookmarks.remove(requestUrl)}
+			onRefresh={() => bookmarks.refresh(requestUrl)}
+		/>
 	</div>
 </div>
 
@@ -43,21 +61,35 @@
 	}
 
 	.link:hover {
-		background-color: white;
+		background-color: var(--white);
 	}
 
 	.context-menu {
 		position: absolute;
+		z-index: 10;
 		top: 0.25rem;
 		right: 0.25rem;
 	}
 
+	.text h2,
+	.text p,
+	.image {
+		position: relative;
+		overflow: hidden;
+	}
+
 	.text {
 		flex-grow: 1;
+		min-width: 0;
 
 		display: flex;
 		flex-direction: column;
+		align-items: flex-start;
 		padding: 0.5rem 1rem;
+	}
+
+	.text h2 {
+		margin-bottom: 0.5rem;
 	}
 
 	.text p {
@@ -66,22 +98,17 @@
 		-webkit-box-orient: vertical;
 		overflow: hidden;
 
+		min-height: 2.625rem;
+
 		margin-bottom: 1rem;
 	}
 
 	.text small {
 		margin-top: auto;
-	}
-
-	.image {
-		position: relative;
-		flex-basis: 200px;
-		flex-shrink: 0;
-	}
-
-	.image img {
-		object-fit: cover;
-		width: 100%;
-		height: 100%;
+		min-width: 0;
+		max-width: 100%;
+		text-overflow: ellipsis;
+		overflow: hidden;
+		white-space: nowrap;
 	}
 </style>

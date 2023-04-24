@@ -2,6 +2,7 @@
 	import { fly } from 'svelte/transition';
 
 	export let onDelete = () => {};
+	export let onRefresh = () => {};
 
 	let open = false;
 
@@ -21,6 +22,9 @@
 		<ul class="list" in:fly={{ y: -20 }} out:fly={{ y: -20 }}>
 			<li>
 				<button on:click|stopPropagation={onDelete}>Delete</button>
+			</li>
+			<li>
+				<button on:click|stopPropagation={onRefresh}>Refresh</button>
 			</li>
 		</ul>
 	{/if}
@@ -51,7 +55,7 @@
 	}
 
 	.button:hover {
-		background-color: rgba(0, 0, 0, 0.2);
+		background-color: var(--bg);
 	}
 
 	.dot {
@@ -71,5 +75,9 @@
 	.list li {
 		padding: 0.5rem 1rem;
 		background-color: white;
+	}
+
+	.list li:not(:first-child) {
+		border-top: 1px solid var(--contrast);
 	}
 </style>
