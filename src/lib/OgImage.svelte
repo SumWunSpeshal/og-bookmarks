@@ -37,6 +37,15 @@
 		flex-shrink: 0;
 	}
 
+	.image:after {
+		/*content: '';*/
+
+		position: absolute;
+		inset: 0;
+
+		background: linear-gradient(180deg, rgba(0, 0, 0, 0.3) 0%, rgba(255, 255, 255, 0) 100%);
+	}
+
 	img {
 		object-fit: cover;
 		position: absolute;

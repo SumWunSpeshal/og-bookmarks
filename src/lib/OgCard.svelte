@@ -7,7 +7,6 @@
 
 	export let isLoading = true;
 	export let requestUrl: string;
-	export let ogUrl = requestUrl;
 	export let ogTitle: string;
 	export let ogDescription: string;
 	export let ogImage: ImageObject;
@@ -35,7 +34,7 @@
 				{/if}
 				<Skeleton {isLoading} />
 			</p>
-			<small>{ogUrl}</small>
+			<small>{requestUrl}</small>
 		</div>
 
 		<OgImage {ogImage} {ogTitle} {requestUrl} {isLoading} />
@@ -57,6 +56,7 @@
 	.link {
 		flex-grow: 1;
 		display: flex;
+		max-width: 100%;
 		transition: background-color 0.1s ease-in-out;
 	}
 
@@ -72,8 +72,7 @@
 	}
 
 	.text h2,
-	.text p,
-	.image {
+	.text p {
 		position: relative;
 		overflow: hidden;
 	}
@@ -85,7 +84,7 @@
 		display: flex;
 		flex-direction: column;
 		align-items: flex-start;
-		padding: 0.5rem 1rem;
+		padding: 0.75rem 1.25rem;
 	}
 
 	.text h2 {
@@ -99,6 +98,8 @@
 		overflow: hidden;
 
 		min-height: 2.625rem;
+
+		color: var(--contrast);
 
 		margin-bottom: 1rem;
 	}
