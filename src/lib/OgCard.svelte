@@ -34,7 +34,7 @@
 				{/if}
 				<Skeleton {isLoading} />
 			</p>
-			<small>{requestUrl}</small>
+			<small>{new URL(requestUrl).hostname}</small>
 		</div>
 
 		<OgImage {ogImage} {ogTitle} {requestUrl} {isLoading} />
