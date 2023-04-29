@@ -1,15 +1,19 @@
 <script lang="ts">
 	import Skeleton from '$lib/Skeleton.svelte';
-	import type { ImageObject } from 'open-graph-scraper/dist/lib/types';
+	import type { OgObject } from 'open-graph-scraper/dist/lib/types';
 
-	export let ogImage: ImageObject;
+	export let ogImage: OgObject['ogImage'];
 	export let ogTitle: string;
 	export let requestUrl: string;
 	export let isLoading = true;
 
-	$: imageUrl = ogImage?.url.startsWith('/')
-		? new URL(ogImage?.url, requestUrl).href
-		: ogImage?.url;
+	$: imageUrl = () => {
+		if (Array.isArray(ogImage) || typeof ogImage === 'string') {
+			return null;
+		}
+		
+		return ogImage?.url.startsWith('/') ? new URL(ogImage?.url, requestUrl).href : ogImage?.url;
+	};
 
 	let isLoadingImage = true;
 
@@ -20,11 +24,11 @@
 
 <div class="image">
 	{#if isLoading}
-		<img src="placeholder.jpg" alt="Placeholder Image" />
-	{:else if imageUrl}
-		<img src={imageUrl} alt={ogTitle} on:load={setIsLoading} />
+		<img src="placeholder.jpg" alt="Placeholder" />
+	{:else if imageUrl()}
+		<img src={imageUrl()} alt={ogTitle} on:load={setIsLoading} />
 	{:else}
-		<img src="placeholder.jpg" alt="Placeholder Image" on:load={setIsLoading} />
+		<img src="placeholder.jpg" alt="Placeholder" on:load={setIsLoading} />
 	{/if}
 	<Skeleton isLoading={isLoadingImage} />
 </div>

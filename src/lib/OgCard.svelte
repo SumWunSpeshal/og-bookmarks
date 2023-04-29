@@ -1,15 +1,15 @@
 <script lang="ts">
-	import { bookmarks } from '$lib/stores/bookmarks';
 	import ContextMenu from '$lib/ContextMenu.svelte';
 	import OgImage from '$lib/OgImage.svelte';
 	import Skeleton from '$lib/Skeleton.svelte';
-	import type { ImageObject } from 'open-graph-scraper/dist/lib/types';
+	import { bookmarks } from '$lib/stores/bookmarks';
+	import type { OgObject } from 'open-graph-scraper/dist/lib/types';
 
 	export let isLoading = true;
-	export let requestUrl: string;
-	export let ogTitle: string;
-	export let ogDescription: string;
-	export let ogImage: ImageObject;
+	export let requestUrl = '';
+	export let ogTitle = '';
+	export let ogDescription = '';
+	export let ogImage: OgObject['ogImage'] = undefined;
 </script>
 
 <div class="card" class:isLoading>
