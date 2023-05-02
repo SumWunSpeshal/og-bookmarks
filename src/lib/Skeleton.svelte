@@ -11,7 +11,7 @@
 	.bg {
 		position: absolute;
 		inset: 0;
-		background-color: var(--bg-dark);
+		background-color: var(--brown-2);
 		z-index: 1;
 	}
 

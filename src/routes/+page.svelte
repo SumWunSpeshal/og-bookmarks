@@ -12,7 +12,7 @@
 
 <section>
 	<AddForm />
-	<Grid --col-amount="2">
+	<Grid --col-amount="3">
 		{#await $bookmarks then bookmarks}
 			{#each Object.entries(bookmarks) as [requestUrl, bookmark]}
 				<OgCard

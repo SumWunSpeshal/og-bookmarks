@@ -10,6 +10,8 @@
 	export let ogTitle = '';
 	export let ogDescription = '';
 	export let ogImage: OgObject['ogImage'] = undefined;
+
+	$: hostname = new URL(requestUrl).hostname;
 </script>
 
 <div class="card" class:isLoading>
@@ -20,7 +22,7 @@
 					{#if isLoading}
 						Lorem ipsum dolor sit amet
 					{:else}
-						{ogTitle || ''}
+						{ogTitle || hostname}
 					{/if}
 				</strong>
 				<Skeleton {isLoading} />
@@ -34,7 +36,7 @@
 				{/if}
 				<Skeleton {isLoading} />
 			</p>
-			<small>{new URL(requestUrl).hostname}</small>
+			<small>{hostname}</small>
 		</div>
 
 		<OgImage {ogImage} {ogTitle} {requestUrl} {isLoading} />
@@ -56,12 +58,14 @@
 	.link {
 		flex-grow: 1;
 		display: flex;
+		column-gap: 1.25rem;
 		max-width: 100%;
 		transition: background-color 0.1s ease-in-out;
+		padding: 0.75rem 1.25rem;
 	}
 
 	.link:hover {
-		background-color: var(--white);
+		background-color: var(--brown-1);
 	}
 
 	.context-menu {
@@ -84,10 +88,15 @@
 		display: flex;
 		flex-direction: column;
 		align-items: flex-start;
-		padding: 0.75rem 1.25rem;
 	}
 
 	.text h2 {
+		display: -webkit-box;
+		-webkit-line-clamp: 2;
+		-webkit-box-orient: vertical;
+		overflow: hidden;
+
+		font-size: 18px;
 		margin-bottom: 0.5rem;
 	}
 
@@ -99,7 +108,7 @@
 
 		min-height: 2.625rem;
 
-		color: var(--contrast);
+		color: var(--stone-7);
 
 		margin-bottom: 1rem;
 	}

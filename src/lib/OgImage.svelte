@@ -37,8 +37,10 @@
 	.image {
 		position: relative;
 		overflow: hidden;
-		flex-basis: 200px;
+		flex-basis: 170px;
 		flex-shrink: 0;
+		outline: 2px solid var(--sand-3);
+		outline-offset: 4px;
 	}
 
 	.image:after {

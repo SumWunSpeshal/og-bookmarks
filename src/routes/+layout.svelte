@@ -1,8 +1,9 @@
 <script>
 	import Header from '$lib/Header.svelte';
+	import 'open-props/colors.min.css';
+	import './base.css';
 	import './fonts.css';
 	import './styles.css';
-	import './base.css';
 </script>
 
 <div class="app">
@@ -28,16 +29,16 @@
 <style>
 	.app {
 		display: grid;
-		grid-template-columns: 1fr minmax(0, 1200px) 1fr;
+		grid-template-columns: 1fr minmax(0, 1400px) 1fr;
 		grid-template-rows: auto 1fr auto;
-		gap: 1px;
+		gap: 2px;
 
 		min-height: 100vh;
 
-		background-color: var(--contrast);
+		background-color: var(--sand-3);
 	}
 
 	.app > * {
-		background-color: var(--bg);
+		background-color: var(--brown-0);
 	}
 </style>

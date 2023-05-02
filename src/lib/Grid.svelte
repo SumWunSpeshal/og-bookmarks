@@ -6,11 +6,11 @@
 	.grid {
 		display: grid;
 		grid-template-columns: repeat(var(--col-amount, 1), minmax(0, 1fr));
-		gap: 1px;
-		outline: 1px solid var(--contrast);
+		gap: 2px;
+		outline: 2px solid var(--sand-3);
 	}
 
 	:global(.grid > *) {
-		outline: 1px solid var(--contrast);
+		outline: 2px solid var(--sand-3);
 	}
 </style>

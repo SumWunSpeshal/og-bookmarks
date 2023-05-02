@@ -40,14 +40,14 @@
 		align-items: center;
 		gap: 3px;
 
-		padding: 6px;
+		padding: 8px;
 
 		border-radius: 50%;
 		aspect-ratio: 1;
 
-		background-color: transparent;
-		border: 0;
-		transform: rotate(90deg);
+		background-color: white;
+		border: 2px solid black;
+		/* transform: rotate(90deg); */
 
 		cursor: pointer;
 
@@ -55,7 +55,7 @@
 	}
 
 	.button:hover {
-		background-color: var(--bg);
+		background-color: var(--sand-1);
 	}
 
 	.dot {
@@ -77,7 +77,11 @@
 		background-color: white;
 	}
 
+	.list li:hover {
+		background-color: var(--sand-1);
+	}
+
 	.list li:not(:first-child) {
-		border-top: 1px solid var(--contrast);
+		border-top: 1px solid black;
 	}
 </style>
